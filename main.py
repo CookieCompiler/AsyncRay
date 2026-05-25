@@ -5,6 +5,10 @@ import json
 import os
 import time
 import base64
+import sys
+
+
+XRAY_BIN = 'xray.exe' if sys.platform == 'win32' else './xray'
 
 async def check_xray(sem, link, index):
     async with sem:
@@ -170,7 +174,7 @@ async def check_xray(sem, link, index):
             
         
         process = await asyncio.create_subprocess_exec(
-            'xray.exe', '-c', config_file,
+            XRAY_BIN, '-c', config_file,
             stdout=asyncio.subprocess.DEVNULL, 
             stderr=asyncio.subprocess.DEVNULL
         )
@@ -226,8 +230,7 @@ async def main():
 
         vl=set(vless_links)
         vle=list(vl)
-        # vle = [
-        # "vless://2bdf5db2-da78-4b5a-8a1f-8deb6c9b00df@93.77.167.35:443?mode=auto&path=%2Fuserapi&security=reality&encryption=none&pbk=pxnzbJKyXFslwW8ZUNp04hP8BnBC7vpgvKhLpdwZvUk&host=vk.com&fp=chrome&allowinsecure=0&type=xhttp&sni=vk.com&sid=1a5cdc31a8649874#%F0%9F%87%B3%F0%9F%87%B1+The+Netherlands+%5B*CIDR%5D+YA"]
+        
         # print(vless_links)
         
         
@@ -238,7 +241,7 @@ async def main():
         for index, link in enumerate(vle):
             tasks.append(check_xray(sem, link, index))
         
-        print(f"Подготовлено {len(tasks)} задач. Начинаю ковровые бомбардировки...")
+        print(f"Подготовлено {len(tasks)} задач. Начинаю проверять))")
     
     
         results = await asyncio.gather(*tasks)
@@ -253,6 +256,6 @@ async def main():
             for proxy in good_proxies:
                 f.write(proxy["link"] + "\n")
                 
-        print(f"💾 Все рабочие серверы успешно сохранены в файл 'good_proxies.txt'!")
+        print(f"Все рабочие серверы успешно сохранены в файл 'good_proxies.txt'!")
 
 asyncio.run(main())

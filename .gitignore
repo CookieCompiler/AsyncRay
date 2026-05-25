@@ -1,0 +1,16 @@
+
+venv/
+env/
+
+
+__pycache__/
+*.pyc
+
+
+# xray.exe
+# *.dat
+
+
+
+data_*.json
+good_proxies.txt
